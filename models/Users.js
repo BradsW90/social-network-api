@@ -1,5 +1,4 @@
 const { Schema, model } = require("mongoose");
-const { emailValidation } = require("../utils/email-validator");
 
 const userSchema = new Schema(
   {
@@ -13,7 +12,13 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      get: (email) => emailValidation(email),
+      validate: {
+        validator: function (emailVal) {
+          const validation = /^([\w\d\._-]+)@([\w\d_-]+)\.([\w\d]{2,3})$/;
+          return validation.test(emailVal);
+        },
+        message: "You must provide a valid email address",
+      },
     },
     thoughts: [
       {
@@ -26,7 +31,6 @@ const userSchema = new Schema(
   {
     toJSON: {
       virtuals: true,
-      getters: true,
     },
     id: false,
   }
