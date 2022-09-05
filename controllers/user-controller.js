@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Thought } = require("../models");
 
 const userController = {
   addUser({ body }, res) {
@@ -53,6 +53,7 @@ const userController = {
         select: "-__v",
       })
       .then((dbUserData) => {
+        //console.log(dbUserData.thoughts[1]);
         if (!dbUserData) {
           res.status(404).json({ message: "No user by that id!" });
           return;
